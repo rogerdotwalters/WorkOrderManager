@@ -1,0 +1,121 @@
+﻿<Window x:Class="WorkOrderManager.View.NewWorkorderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WorkOrderManager.View"
+        xmlns:vm="clr-namespace:WorkOrderManager.ViewModel"
+        mc:Ignorable="d"
+        Title="NewWorkorderWindow" Height="550" Width="500">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <vm:NewWorkorderVM x:Key="vm"/>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Window.DataContext>
+        <StaticResource ResourceKey="vm"/>
+    </Window.DataContext>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="3*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+            <TextBlock Text="Workorder # "
+                       FontSize="20"/>
+            <TextBlock Text="{Binding Source={StaticResource vm}, Path=WorkorderId}"
+                       FontSize="20"/>
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Margin="5">
+                <TextBlock Text="Customer PO:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=CustomerPO, Mode=TwoWay}"/>
+                <TextBlock Text="NTE Amount:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=NTE, Mode=TwoWay}"
+                         TextChanged="DecimalTextBox_TextChanged"
+                         HorizontalContentAlignment="Right"/>
+                <TextBlock Text="Status:"/>
+                <ComboBox Name="StatusComboBox"
+                          SelectedItem="{Binding Source={StaticResource vm}, Path=Status, Mode=TwoWay}"/>
+                <TextBlock Text="Service Tag:"/>
+                <ComboBox Name="ServiceTagComboBox"
+                          SelectedItem="{Binding Source={StaticResource vm}, Path=ServiceTag, Mode=TwoWay}"/>
+                <TextBlock Text="Current Time:"/>
+                <TextBlock Text="{Binding Source={StaticResource vm}, Path=CurrentTime}"/>
+                
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="Set ETA:"
+                               Margin="5 5 10 5"
+                               VerticalAlignment="Center"/>
+                    <ComboBox Name="HourComboBox" 
+                              Margin="5"
+                              SelectedValue="{Binding Source={StaticResource vm}, Path=SelectedHour, Mode=TwoWay}"/>
+                    <TextBlock Text=":"/>
+                    <ComboBox Name="MinuteComboBox" 
+                              Margin="5" 
+                              SelectedValue="{Binding Source={StaticResource vm}, Path=SelectedMinute, Mode=TwoWay}"/>
+                    <ComboBox Name="MeridiemComboBox" 
+                              Margin="5" 
+                              SelectedValue="{Binding Source={StaticResource vm}, Path=SelectedMeridiem, Mode=TwoWay}"/>
+                </StackPanel>
+
+                <DatePicker SelectedDate="{Binding Source={StaticResource vm}, Path=SelectedDate, Mode=OneWay}"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="ETA:"
+                               Margin="10 0 10 0"/>
+                    <TextBlock Text="{Binding Source={StaticResource vm}, Path=SelectedETA, Mode=TwoWay}"/>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Margin="5">
+                <TextBlock Text="Customer:"/>
+                <ComboBox Name="CustomerComboBox"
+                          ItemsSource="{Binding Source={StaticResource vm}, Path=CustomerNames}"
+                          SelectedValue="{Binding Source={StaticResource vm}, Path=CustomerId, Mode=TwoWay}"/>
+                <TextBlock Text="Location:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=Location, Mode=TwoWay}"/>
+                <TextBlock Text="Street:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=Street, Mode=TwoWay}"/>
+                <TextBlock Text="City:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=City, Mode=TwoWay}"/>
+                <TextBlock Text="State:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=Region, Mode=TwoWay}"/>
+                <TextBlock Text="Postal Code:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=PostalCode, Mode=TwoWay}"/>
+            </StackPanel>
+        </Grid>
+
+        <StackPanel Margin="5" 
+                    Grid.Row="2">
+            <TextBlock Text="Service Description:"/>
+            <TextBox Height="80"
+                     Text="{Binding Source={StaticResource vm}, Path=ServiceDescription, Mode=TwoWay}"/>
+            <Button Margin="10 10 10 0"
+                    Content="Submit"
+                    Click="Button_Click"
+                    Command="{Binding Source={StaticResource vm}, Path=SubmitWorkorderCommand}"/>
+            <Button Margin="10"
+                    Content="Cancel"
+                    x:Name="CancelButton"
+                    Click="CancelButton_Click"
+                    Background="IndianRed"
+                    Foreground="FloralWhite"/>
+        </StackPanel>
+        
+        
+    </Grid>
+</Window>

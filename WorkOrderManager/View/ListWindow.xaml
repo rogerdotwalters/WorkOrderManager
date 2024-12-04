@@ -1,0 +1,234 @@
+﻿<Window
+    x:Class="WorkOrderManager.View.ListWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:WorkOrderManager.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:WorkOrderManager.ViewModel"
+    Title="ListWindow"
+    Width="1200"
+    Height="700"
+    MinWidth="1200"
+    mc:Ignorable="d">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <vm:ListVM x:Key="vm" />
+            <Style x:Key="ListBaseWidth" TargetType="ColumnDefinition">
+                <Setter Property="Width" Value="*" />
+            </Style>
+            <Style x:Key="ColumnSplitter" TargetType="ColumnDefinition">
+                <Setter Property="Width" Value="1" />
+            </Style>
+            <Style TargetType="ListViewItem">
+                <Setter Property="Margin" Value="2" />
+                <Setter Property="BorderBrush" Value="LightGray" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+            </Style>
+            <Style TargetType="GridViewColumnHeader">
+                <Setter Property="Background" Value="#f5424b" />
+                <Setter Property="Foreground" Value="GhostWhite" />
+            </Style>
+            <Style TargetType="DataGrid">
+                <Setter Property="CanUserResizeRows" Value="False" />
+                <Setter Property="AlternatingRowBackground" Value="Azure" />
+                <Setter Property="Background" Value="#fafacd" />
+                <Setter Property="AutoGenerateColumns" Value="False"/>
+            </Style>
+            <Style TargetType="DataGridColumnHeader">
+                <Setter Property="Background" Value="#f5424b" />
+                <Setter Property="Foreground" Value="GhostWhite" />
+                <Setter Property="BorderBrush" Value="#f01f2a" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontWeight" Value="DemiBold" />
+            </Style>
+            <Style x:Key="Dashboards" TargetType="TextBlock">
+                <Setter Property="Background" Value="#140303" />
+                <Setter Property="Foreground" Value="GhostWhite" />
+                <Setter Property="FontWeight" Value="Bold" />
+            </Style>
+            <Style x:Key="DashboardButtons" TargetType="Button">
+                <Setter Property="Margin" Value="3" />
+                <Setter Property="Height" Value="50" />
+                <Setter Property="Width" Value="85" />
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="FontWeight" Value="DemiBold" />
+                <Setter Property="BorderThickness" Value="2" />
+                <Setter Property="BorderBrush" Value="DarkGray" />
+                <Setter Property="Background" Value="#ed5651" />
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Window.DataContext>
+        <StaticResource ResourceKey="vm" />
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70" />
+            <RowDefinition Height="70" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="LeftSideBar" Width="145" />
+            <ColumnDefinition x:Name="MiddleContent" Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <DockPanel Grid.ColumnSpan="2" Background="DarkBlue">
+            <Menu Height="20" DockPanel.Dock="Top">
+                <MenuItem Header="File">
+                    <MenuItem Header="Open Workorder" />
+                    <MenuItem Command="{Binding Source={StaticResource vm}, Path=NewWorkorderWindowCommand}" Header="New Workorder" />
+                    <Separator />
+                    <MenuItem Header="Exit" />
+                </MenuItem>
+                <MenuItem Header="Customer">
+                    <MenuItem Header="Customers"/>
+                    <MenuItem Header="New Customer" Command="{Binding Source={StaticResource vm}, Path=NewCustomerWindowCommand}"/>
+                </MenuItem>
+            </Menu>
+            <Grid />
+
+        </DockPanel>
+
+        <Rectangle
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Fill="Purple" />
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1"
+                    Orientation="Horizontal"
+                    Background="Azure">
+            <StackPanel Width="100">
+                <TextBlock Text="Enter WO or PO:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=SearchInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Height="22"
+                         Margin="0" />
+            </StackPanel>
+            <StackPanel Width="100">
+                <TextBlock Text="Status"/>
+                <ComboBox ItemsSource="{Binding Source={StaticResource vm}, Path=StatusCodes}"
+                          SelectedItem="{Binding Source={StaticResource vm}, Path=StatusFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          
+                          Height="22"
+                          Margin="0" />
+            </StackPanel>
+            <StackPanel Width="100">
+                <TextBlock Text="Customer"/>
+                <ComboBox ItemsSource="{Binding Source={StaticResource vm}, Path=CustomerNames}"
+                          SelectedItem="{Binding Source={StaticResource vm}, Path=CustomerFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          Height="22"
+                          Margin="0"
+                          x:Name="CustomerCB"/>
+            </StackPanel>
+            <StackPanel Width="100">
+                <TextBlock Text="Service Tag"/>
+                <ComboBox ItemsSource="{Binding Source={StaticResource vm}, Path=ServiceCodes}"
+                          SelectedItem="{Binding Source={StaticResource vm}, Path=ServiceTagFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          Height="22"
+                          Margin="0"/>
+            </StackPanel>
+            <StackPanel Width="100">
+                <TextBlock Text=""/>
+                <Button Content="Clear Filters"
+                        Command="{Binding Source={StaticResource vm}, Path=ClearFiltersCommand}"
+                        Height="22"
+                        Margin="8 0 0 0" />
+            </StackPanel>
+        </StackPanel>
+
+        <Rectangle Grid.Row="2" Fill="Azure" />
+        <StackPanel Grid.Row="2">
+            <TextBlock
+                x:Name="Dashboards"
+                Style="{StaticResource Dashboards}"
+                Text="Dashboards" />
+
+            <Button Content="Overview" Style="{StaticResource DashboardButtons}" />
+            <Button Content="Intake" Style="{StaticResource DashboardButtons}" />
+            <Button Content="Estimation" 
+                    Style="{StaticResource DashboardButtons}"
+                    Command="{Binding Source={StaticResource vm}, Path=OpenEstimationDashboardWindowCommand}"/>
+            <Button Content="Materials" Style="{StaticResource DashboardButtons}" />
+            <Button Content="Dispatch" Style="{StaticResource DashboardButtons}" />
+            <Button Content="Invoicing" Style="{StaticResource DashboardButtons}" />
+        </StackPanel>
+
+        <DataGrid
+            Grid.Row="2"
+            Grid.Column="1"
+            ItemsSource="{Binding Source={StaticResource vm}, Path=Workorders}"
+            SelectedItem="{Binding Source={StaticResource vm}, Path=SelectedWorkorder, Mode=OneWayToSource}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Id}" 
+                                    Header="Id" IsReadOnly="True" x:Name="ValueCell" />
+                <DataGridTextColumn Binding="{Binding ETA}" 
+                                    Header="ETA" IsReadOnly="True"/>
+                <DataGridComboBoxColumn ItemsSource="{Binding Source={StaticResource vm}, Path=StatusCodes}" 
+                                        SelectedItemBinding="{Binding Status, Mode=TwoWay}" 
+                                        Header="Status" />
+                <DataGridComboBoxColumn ItemsSource="{Binding Source={StaticResource vm}, Path=CustomerNames}" 
+                                        SelectedItemBinding="{Binding CustomerId, Mode=TwoWay}" 
+                                        Header="Customer" />
+                <DataGridTextColumn Binding="{Binding CustomerPO}" 
+                                    Header="Customer PO" IsReadOnly="True"/>
+                <DataGridComboBoxColumn ItemsSource="{Binding Source={StaticResource vm}, Path=ServiceCodes}" 
+                                        SelectedItemBinding="{Binding ServiceTag, Mode=TwoWay}" 
+                                        Header="Service Tag" />
+                <DataGridTextColumn Binding="{Binding Location}" 
+                                    Header="Location" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding City}" 
+                                    Header="City" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Street}" 
+                                    Header="Street" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding NTE}" 
+                                    Header="NTE" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding DateUpdated}" 
+                                    Header="Updated" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding ServiceDescription}" 
+                                    Header="Service Description" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <Rectangle
+            Grid.Row="3"
+            Grid.ColumnSpan="3"
+            Fill="Magenta" />
+
+        <StackPanel
+            Grid.Row="3"
+            Grid.ColumnSpan="2"
+            Orientation="Horizontal">
+            <Button Command="{Binding Source={StaticResource vm}, Path=RefreshCommand}" 
+                    Content="Refresh"
+                    Padding="10 0 10 0"
+                    Margin="25 0 0 0" />
+            <TextBlock Text="Selected WO# "
+                       VerticalAlignment="Center"
+                       FontSize="12" FontWeight="Bold"
+                       Margin="25 0 0 0"/>
+            <TextBlock Text="{Binding Source={StaticResource vm}, Path=SelectedWorkorder.Id, Mode=OneWay}"
+                       VerticalAlignment="Center"
+                       FontSize="12" FontWeight="Bold" />
+            <Button Command="{Binding Source={StaticResource vm}, Path=QuickSaveCommand}" 
+                    Content="Quick Save"
+                    Padding="10 0 10 0"
+                    Margin="25 0 0 0"/>
+            <Button Command="{Binding Source={StaticResource vm}, Path=QuickDeleteCommand}" 
+                    Content="Quick Delete"
+                    Padding="10 0 10 0"
+                    Margin="25 0 0 0"/>
+            <Button Command="{Binding Source={StaticResource vm}, Path=QuickOpenCommand}" 
+                    Content="Open"
+                    Padding="10 0 10 0"
+                    Margin="25 0 0 0"/>
+        </StackPanel>
+
+    </Grid>
+</Window>

@@ -1,0 +1,83 @@
+﻿<Window x:Class="WorkOrderManager.View.WorkorderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WorkOrderManager.View"
+        xmlns:vm="clr-namespace:WorkOrderManager.ViewModel"
+        xmlns:converters="clr-namespace:WorkOrderManager.ViewModel.Converters"
+        mc:Ignorable="d"
+        Title="WorkorderWindow" Height="450" Width="800">
+    <Window.Resources>
+        <ResourceDictionary>
+            <vm:WorkorderWindowVM x:Key="vm"/>
+            <converters:AddressMultiValueConverter x:Key="AddressConverter"/>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="4*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <TextBlock Text="Workorder #"/>
+            <TextBlock Text="{Binding Id}"/>
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0"
+                        Margin="20"
+                        HorizontalAlignment="Center">
+                <TextBlock Text="Customer: "/>
+                <TextBlock Text="{Binding CustomerId}"/>
+                <TextBlock Text="Status: "/>
+                <TextBlock Text="{Binding Status}"/>
+                <TextBlock Text="Customer PO: "/>
+                <TextBlock Text="{Binding CustomerPO}"/>
+                <TextBlock Text="Created On: "/>
+                <TextBlock Text="{Binding DateCreated}"/>
+                <TextBlock Text="NTE: "/>
+                <TextBlock Text="{Binding NTE}"/>
+                <TextBlock Text="Service Tag: "/>
+                <TextBlock Text="{Binding ServiceTag}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1"
+                        Margin="20"
+                        HorizontalAlignment="Center">
+                <TextBlock Text="Current ETA: "/>
+                <TextBlock Text="{Binding ETA}"/>
+                <TextBlock Text="Location: "/>
+                <TextBlock Text="{Binding Location}"/>
+                <TextBlock Text="Address: "/>
+                <TextBox BorderThickness="0"
+                         Margin="0"
+                         Background="AliceBlue">
+                    <TextBox.Text>
+                        <MultiBinding Converter="{StaticResource AddressConverter}" Mode="OneWay">
+                            <Binding Path="Street"/>
+                            <Binding Path="City"/>
+                            <Binding Path="Region"/>
+                            <Binding Path="PostalCode"/>
+                        </MultiBinding>
+                    </TextBox.Text>
+                </TextBox>
+                <TextBlock Text="{Binding Status}"/>
+                <TextBlock Text="Last Updated: "/>
+                <TextBlock Text="{Binding DateUpdated}"/>
+                <TextBlock Text="Service Description: "/>
+                <TextBlock Text="{Binding ServiceDescription}"
+                           TextWrapping="Wrap"
+                           HorizontalAlignment="Left"
+                           Width="250"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

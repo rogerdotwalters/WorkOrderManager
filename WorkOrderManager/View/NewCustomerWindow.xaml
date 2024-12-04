@@ -1,0 +1,96 @@
+﻿<Window x:Class="WorkOrderManager.View.NewCustomerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WorkOrderManager.View"
+        xmlns:vm="clr-namespace:WorkOrderManager.ViewModel"
+        mc:Ignorable="d"
+        Title="NewCustomer" Height="500" Width="500">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <vm:NewCustomerVM x:Key="vm"/>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Window.DataContext>
+        <StaticResource ResourceKey="vm"/>
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+            <TextBlock Text="New Customer"
+                       FontSize="20"/>
+            <TextBlock Text=""
+                       FontSize="20"/>
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Margin="5">
+                <TextBlock Text="Company Name:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=CompanyName}"/>
+                <TextBlock Text="Primary Email:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=Email}"/>
+                <TextBlock Text="Primary Phone:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=Phone}"/>
+                <TextBlock Text="Address:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=Address}"/>
+                <TextBlock Text="City:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=City}"/>
+                <TextBlock Text="State:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=Region}"/>
+                <TextBlock Text="Zip:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=PostalCode}"/>
+                <TextBlock Text="Country:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=Country}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Margin="5">
+                <TextBlock Text="Nickname:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=Nickname}"/>
+                <TextBlock Text="Alternate Email:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=AlternateEmail}"/>
+                <TextBlock Text="After Hours Phone:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=AHPhone}"/>
+                <TextBlock Text="Billing Address:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=BillingAddress}"/>
+                <TextBlock Text="Billing City:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=BillingCity}"/>
+                <TextBlock Text="Billing State:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=BillingRegion}"/>
+                <TextBlock Text="Billing Zip:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=BillingPostalCode}"/>
+                <TextBlock Text="Billing Country:"/>
+                <TextBox Text="{Binding Source={StaticResource vm}, Path=BillingCountry}"/>
+            </StackPanel>
+        </Grid>
+
+        <StackPanel Margin="5" 
+                    Grid.Row="2">
+            <Button Margin="10 10 10 0"
+                    Content="Submit"
+                    Command="{Binding Source={StaticResource vm}, Path=SubmitCustomerCommand}"/>
+            <Button Margin="10"
+                    Content="Cancel"
+                    x:Name="CancelButton"
+                    Click="CancelButton_Click"
+                    Background="IndianRed"
+                    Foreground="FloralWhite"/>
+        </StackPanel>
+
+
+    </Grid>
+</Window>
